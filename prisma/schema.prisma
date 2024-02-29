@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts Post[] //Postとのリレーションに必要。User(一)対Post(多)なので、Post[]と配列型にする。
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  description String
+  auther User @relation(fields: [autherId], references: [id], onDelete: Cascade) //Userとのリレーションに必要。fieldsには自身のモデルのフィールド、referencesには相手のモデルのフィールド。onDelete: CascadeでUser(親)が削除された時、Post(子)も削除される。このフィールドは実際にはデータベースのフィールドにはならず、fieldsに設定したフィールドがデータベースに保存される
+  autherId Int
+}

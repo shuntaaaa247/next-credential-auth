@@ -1,0 +1,7 @@
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "description" TEXT NOT NULL,
+    "autherId" INTEGER NOT NULL,
+    CONSTRAINT "Post_autherId_fkey" FOREIGN KEY ("autherId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
